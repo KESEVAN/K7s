@@ -1,0 +1,140 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    font-family: 'D-DIN';
+    src: url('D-DIN.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #000000;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #005288;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #0066cc;
+}
+
+/* Smooth scroll behavior */
+html {
+    scroll-behavior: smooth;
+    background-color: #000000;
+    color: #FFFFFF;
+}
+
+/* Video background */
+.video-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.video-background.loaded {
+    opacity: 0.4;
+}
+
+/* Ensure main content stays above video */
+main {
+    position: relative;
+    z-index: 1;
+}
+
+/* Section styles */
+section {
+    position: relative;
+    z-index: 1;
+}
+
+/* Additional custom styles */
+.transition {
+    transition: all 0.3s ease;
+}
+
+.text-gradient {
+    background: linear-gradient(90deg, #FFFFFF 0%, #E0E0E0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+}
+
+.hero-text {
+    text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.hero-subtitle {
+    color: #FFFFFF;
+    text-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+    font-weight: 500;
+}
+
+.hover-underline {
+    position: relative;
+}
+
+.hover-underline::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -4px;
+    left: 0;
+    background-color: #FFFFFF;
+    transition: width 0.3s ease;
+}
+
+.hover-underline:hover::after {
+    width: 100%;
+}
+
+.section-overlay {
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+}
+
+/* Vision section styles */
+.vision-text {
+    color: #FFFFFF;
+    text-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+    font-weight: 400;
+    line-height: 1.6;
+}
+
+.vision-card {
+    background: rgba(27, 27, 27, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.vision-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.vision-card h3 {
+    color: #FFFFFF;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.vision-card p {
+    color: #FFFFFF;
+    opacity: 0.9;
+}
