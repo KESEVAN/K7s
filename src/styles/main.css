@@ -48,7 +48,7 @@ html {
 }
 
 .video-background.loaded {
-    opacity: 0.4;
+    opacity: 0.7;
 }
 
 /* Ensure main content stays above video */
@@ -68,15 +68,26 @@ section {
     transition: all 0.3s ease;
 }
 
+/* Typing animation */
+@keyframes blink {
+    50% { border-color: transparent }
+}
+
 .text-gradient {
-    background: linear-gradient(90deg, #FFFFFF 0%, #E0E0E0 100%);
+    background: linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+    text-shadow: 
+        0 0 40px rgba(255, 255, 255, 0.8),
+        0 0 80px rgba(255, 255, 255, 0.4),
+        0 0 120px rgba(255, 255, 255, 0.2);
+    font-weight: 700;
 }
 
 .hero-text {
-    text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    text-shadow: 
+        0 0 40px rgba(255, 255, 255, 0.8),
+        0 0 80px rgba(255, 255, 255, 0.4);
 }
 
 .hero-subtitle {
@@ -137,4 +148,140 @@ section {
 .vision-card p {
     color: #FFFFFF;
     opacity: 0.9;
+}
+
+/* Experience section styles */
+.experience-section {
+    background: linear-gradient(to bottom, #000000, #0a0a0a);
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+.experience-container {
+    position: relative;
+    padding: 100px 0;
+}
+
+.experience-item {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 100px 0;
+}
+
+.experience-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+.experience-logo {
+    width: 500px;
+    height: 500px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    transition: all 0.3s ease;
+}
+
+.experience-logo:hover {
+    filter: brightness(1) invert(0);
+}
+
+.experience-details {
+    opacity: 0;
+    transform: translateX(50px);
+    transition: all 0.6s ease;
+}
+
+.experience-details.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.experience-year {
+    font-size: 1.5rem;
+    color: #005288;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.experience-role {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    background: linear-gradient(90deg, #FFFFFF 0%, #E0E0E0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.experience-description {
+    color: #FFFFFF;
+    line-height: 1.6;
+    text-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+}
+
+.experience-image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease;
+}
+
+.experience-image.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.timeline-line {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, transparent, #005288, transparent);
+}
+
+/* Footer styles */
+footer.footer-dark {
+    background: linear-gradient(180deg, #1a1a1a 0%, #000000 100%) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    z-index: 10;
+}
+
+footer .footer-brand {
+    color: #FFFFFF !important;
+    font-weight: 700;
+    text-shadow: 
+        0 0 20px rgba(255, 255, 255, 0.6),
+        0 0 40px rgba(255, 255, 255, 0.4),
+        0 0 60px rgba(255, 255, 255, 0.2) !important;
+}
+
+footer .footer-link {
+    color: #FFFFFF !important;
+    opacity: 0.9;
+    transition: all 0.3s ease !important;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+footer .footer-link:hover {
+    color: #005288 !important;
+    opacity: 1;
+    transform: translateY(-2px);
+    text-shadow: 
+        0 0 20px rgba(0, 82, 136, 0.8),
+        0 0 40px rgba(0, 82, 136, 0.4) !important;
+}
+
+footer .footer-copyright {
+    color: #FFFFFF !important;
+    opacity: 0.9;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }

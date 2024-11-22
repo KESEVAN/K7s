@@ -115,3 +115,23 @@ if (video) {
         }
     });
 }
+
+// Experience section animations
+const experienceObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const details = entry.target.querySelector('.experience-details');
+            const image = entry.target.querySelector('.experience-image');
+            
+            if (details) details.classList.add('visible');
+            if (image) image.classList.add('visible');
+        }
+    });
+}, {
+    threshold: 0.2,
+    rootMargin: '0px'
+});
+
+document.querySelectorAll('.experience-item').forEach(item => {
+    experienceObserver.observe(item);
+});
