@@ -38,7 +38,8 @@ addWorkForm.addEventListener('submit', async (e) => {
         });
 
         if (!response.ok) {
-            throw new Error('Failed to create work');
+            const error = await response.json();
+            throw new Error(error.message || 'Failed to create work');
         }
 
         await loadWorks();
@@ -46,7 +47,7 @@ addWorkForm.addEventListener('submit', async (e) => {
         addWorkForm.reset();
     } catch (error) {
         console.error('Error creating work:', error);
-        alert('Failed to create work. Please try again.');
+        alert(error.message || 'Failed to create work. Please try again.');
     }
 });
 
@@ -58,13 +59,14 @@ async function deleteWork(id) {
         });
 
         if (!response.ok) {
-            throw new Error('Failed to delete work');
+            const error = await response.json();
+            throw new Error(error.message || 'Failed to delete work');
         }
 
         await loadWorks();
     } catch (error) {
         console.error('Error deleting work:', error);
-        alert('Failed to delete work. Please try again.');
+        alert(error.message || 'Failed to delete work. Please try again.');
     }
 }
 
@@ -72,19 +74,25 @@ async function loadWorks() {
     try {
         const response = await fetch(`${API_URL}/works`);
         if (!response.ok) {
-            throw new Error('Failed to fetch works');
+            const error = await response.json();
+            throw new Error(error.message || 'Failed to fetch works');
         }
         
         const works = await response.json();
         renderWorks(works);
     } catch (error) {
         console.error('Error loading works:', error);
-        worksContainer.innerHTML = '<p class="text-red-500">Failed to load works. Please refresh the page.</p>';
+        worksContainer.innerHTML = `<p class="text-red-500">${error.message || 'Failed to load works. Please refresh the page.'}</p>`;
     }
 }
 
 function renderWorks(works) {
     worksContainer.innerHTML = '';
+    
+    if (!works.length) {
+        worksContainer.innerHTML = '<p class="text-gray-500">No works added yet.</p>';
+        return;
+    }
     
     works.forEach(work => {
         const workCard = document.createElement('div');
@@ -93,7 +101,7 @@ function renderWorks(works) {
             <h3>${work.title}</h3>
             <p>${work.description}</p>
             ${work.link ? `<a href="${work.link}" target="_blank" class="text-accent hover:text-accent-light block mb-4">View Project →</a>` : ''}
-            <button onclick="deleteWork(${work.id})" class="delete-btn">
+            <button onclick="deleteWork('${work._id}')" class="delete-btn">
                 Delete Work
             </button>
         `;

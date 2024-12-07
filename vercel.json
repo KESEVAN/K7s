@@ -2,21 +2,54 @@
     "version": 2,
     "builds": [
         {
-            "src": "api/*.js",
-            "use": "@vercel/node"
+            "src": "server/index.js",
+            "use": "@vercel/node",
+            "config": {
+                "maxLambdaSize": "10mb"
+            }
         },
         {
-            "src": "package.json",
-            "use": "@vercel/static-build",
-            "config": {
-                "distDir": "dist"
-            }
+            "src": "*.html",
+            "use": "@vercel/static"
+        },
+        {
+            "src": "src/**",
+            "use": "@vercel/static"
         }
     ],
     "routes": [
         {
+            "src": "/api/health",
+            "dest": "/server/index.js",
+            "methods": ["GET"]
+        },
+        {
             "src": "/api/(.*)",
-            "dest": "/api/$1"
+            "dest": "/server/index.js",
+            "methods": ["GET", "POST", "DELETE"],
+            "headers": {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "GET, POST, DELETE, OPTIONS",
+                "Access-Control-Allow-Headers": "Content-Type"
+            }
+        },
+        {
+            "src": "/src/(.*)",
+            "dest": "/src/$1",
+            "headers": {
+                "cache-control": "public, max-age=31536000, immutable"
+            }
+        },
+        {
+            "src": "/goals",
+            "dest": "/goals.html"
+        },
+        {
+            "src": "/works",
+            "dest": "/works.html"
+        },
+        {
+            "handle": "filesystem"
         },
         {
             "src": "/(.*)",

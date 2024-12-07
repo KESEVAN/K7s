@@ -38,7 +38,8 @@ addGoalForm.addEventListener('submit', async (e) => {
         });
 
         if (!response.ok) {
-            throw new Error('Failed to create goal');
+            const error = await response.json();
+            throw new Error(error.message || 'Failed to create goal');
         }
 
         await loadGoals();
@@ -46,7 +47,7 @@ addGoalForm.addEventListener('submit', async (e) => {
         addGoalForm.reset();
     } catch (error) {
         console.error('Error creating goal:', error);
-        alert('Failed to create goal. Please try again.');
+        alert(error.message || 'Failed to create goal. Please try again.');
     }
 });
 
@@ -58,13 +59,14 @@ async function deleteGoal(id) {
         });
 
         if (!response.ok) {
-            throw new Error('Failed to delete goal');
+            const error = await response.json();
+            throw new Error(error.message || 'Failed to delete goal');
         }
 
         await loadGoals();
     } catch (error) {
         console.error('Error deleting goal:', error);
-        alert('Failed to delete goal. Please try again.');
+        alert(error.message || 'Failed to delete goal. Please try again.');
     }
 }
 
@@ -80,19 +82,25 @@ async function loadGoals() {
     try {
         const response = await fetch(`${API_URL}/goals`);
         if (!response.ok) {
-            throw new Error('Failed to fetch goals');
+            const error = await response.json();
+            throw new Error(error.message || 'Failed to fetch goals');
         }
         
         const goals = await response.json();
         renderGoals(goals);
     } catch (error) {
         console.error('Error loading goals:', error);
-        goalsContainer.innerHTML = '<p class="text-red-500">Failed to load goals. Please refresh the page.</p>';
+        goalsContainer.innerHTML = `<p class="text-red-500">${error.message || 'Failed to load goals. Please refresh the page.'}</p>`;
     }
 }
 
 function renderGoals(goals) {
     goalsContainer.innerHTML = '';
+    
+    if (!goals.length) {
+        goalsContainer.innerHTML = '<p class="text-gray-500">No goals added yet.</p>';
+        return;
+    }
     
     goals.forEach(goal => {
         const goalCard = document.createElement('div');
@@ -100,8 +108,8 @@ function renderGoals(goals) {
         goalCard.innerHTML = `
             <h3>${goal.title}</h3>
             <p>${goal.description}</p>
-            <div class="date">Target Date: ${formatDate(goal.end_date)}</div>
-            <button onclick="deleteGoal(${goal.id})" class="delete-btn">
+            <p class="text-sm text-gray-500">Due: ${formatDate(goal.end_date)}</p>
+            <button onclick="deleteGoal('${goal._id}')" class="delete-btn">
                 Delete Goal
             </button>
         `;
