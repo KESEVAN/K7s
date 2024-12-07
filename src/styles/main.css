@@ -247,6 +247,57 @@ section {
     background: linear-gradient(to bottom, transparent, #005288, transparent);
 }
 
+/* Hero text styling */
+.hero-text {
+    font-size: 8rem;
+    font-weight: 800;
+    letter-spacing: -2px;
+    line-height: 1.1;
+    background: linear-gradient(to right, #ffffff, #4a90e2, #ffffff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 
+        0 0 20px rgba(255, 255, 255, 0.3),
+        0 0 40px rgba(74, 144, 226, 0.3);
+    animation: glow 3s ease-in-out infinite alternate;
+    position: relative;
+    z-index: 2;
+}
+
+.hero-subtitle {
+    font-size: 2.5rem;
+    font-weight: 400;
+    color: #ffffff;
+    opacity: 0.9;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    letter-spacing: 1px;
+    margin-top: 1rem;
+}
+
+@keyframes glow {
+    from {
+        text-shadow: 
+            0 0 20px rgba(255, 255, 255, 0.3),
+            0 0 40px rgba(74, 144, 226, 0.3);
+    }
+    to {
+        text-shadow: 
+            0 0 25px rgba(255, 255, 255, 0.5),
+            0 0 50px rgba(74, 144, 226, 0.5);
+    }
+}
+
+/* Responsive text sizes */
+@media (max-width: 768px) {
+    .hero-text {
+        font-size: 4rem;
+    }
+    .hero-subtitle {
+        font-size: 1.8rem;
+    }
+}
+
 /* Footer styles */
 footer.footer-dark {
     background: linear-gradient(180deg, #1a1a1a 0%, #000000 100%) !important;

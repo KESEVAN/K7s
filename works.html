@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kesevan S | Works</title>
+    <link href="/src/styles/main.css" rel="stylesheet">
+    <link href="/src/styles/goals.css" rel="stylesheet">
+    <meta name="description" content="Kesevan - Portfolio Works">
+</head>
+<body class="bg-space-black text-text-primary font-sans antialiased">
+    <header class="fixed w-full z-50 bg-space-black/80 backdrop-blur-md">
+        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-text-primary hover-underline">KESEVAN BALAJI</div>
+            <ul class="flex space-x-8">
+                <li><a href="index.html#home" class="hover-underline">HOME</a></li>
+                <li><a href="index.html#vision" class="hover-underline">VISION</a></li>
+                <li><a href="index.html#projects" class="hover-underline">PROJECTS</a></li>
+                <li><a href="index.html#experience" class="hover-underline">EXPERIENCE</a></li>
+                <li><a href="index.html#contact" class="hover-underline">CONTACT</a></li>
+                <li><a href="works.html" class="hover-underline active">WORKS</a></li>
+                <li><a href="goals.html" class="hover-underline">GOALS</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="pt-24 pb-12 min-h-screen">
+        <div class="container mx-auto px-4">
+            <h1 class="text-4xl font-bold">My Works</h1>
+            <div id="worksContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+                <!-- Works will be dynamically added here -->
+            </div>
+        </div>
+
+        <button id="addWorkBtn" class="add-item-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+        </button>
+
+        <!-- Add Work Modal -->
+        <div id="addWorkModal" class="modal hidden">
+            <div class="modal-content">
+                <h2 class="text-2xl font-bold mb-4">Add New Work</h2>
+                <form id="addWorkForm">
+                    <div class="mb-4">
+                        <label for="workTitle" class="block mb-2">Title</label>
+                        <input type="text" id="workTitle" required class="w-full p-2 rounded bg-space-gray text-white">
+                    </div>
+                    <div class="mb-4">
+                        <label for="workDescription" class="block mb-2">Description</label>
+                        <textarea id="workDescription" required class="w-full p-2 rounded bg-space-gray text-white" rows="3"></textarea>
+                    </div>
+                    <div class="mb-4">
+                        <label for="workLink" class="block mb-2">Project Link (optional)</label>
+                        <input type="url" id="workLink" class="w-full p-2 rounded bg-space-gray text-white" placeholder="https://...">
+                    </div>
+                    <div class="flex justify-end space-x-4">
+                        <button type="button" id="cancelWorkBtn" class="px-4 py-2 rounded bg-gray-600 hover:bg-gray-700">Cancel</button>
+                        <button type="submit" class="px-4 py-2 rounded bg-blue-600 hover:bg-blue-700">Add Work</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer class="py-12 footer-dark">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col items-center space-y-6">
+                <p>&copy; 2024 Kesevan Balaji. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/src/js/works.js"></script>
+</body>
+</html>
