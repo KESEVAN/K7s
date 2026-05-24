@@ -8,6 +8,7 @@ export default defineConfig({
         main:              resolve(__dirname, 'index.html'),
         goals:             resolve(__dirname, 'goals.html'),
         works:             resolve(__dirname, 'works.html'),
+        fdz:               resolve(__dirname, 'fdz.html'),
         'tol-index':       resolve(__dirname, 'thinking_out_loud/index.html'),
         'tol-strings':     resolve(__dirname, 'thinking_out_loud/fdz-strings-and-silence.html'),
       }
