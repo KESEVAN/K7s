@@ -4,6 +4,7 @@ module.exports = {
     "./index.html",
     "./works.html",
     "./goals.html",
+    "./thinking_out_loud/**/*.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
