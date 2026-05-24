@@ -11,9 +11,7 @@
     document.body.style.overflow = 'hidden';
 
     const logoHTML = LOGO
-        ? `<div style="margin-bottom:2rem;">
-               <img src="${LOGO}" alt="logo" style="width:72px;height:72px;object-fit:contain;" />
-           </div>`
+        ? `<img src="${LOGO}" alt="logo" style="width:200px;height:200px;object-fit:contain;display:block;margin:0 auto 2.5rem;" />`
         : '';
 
     const subtitleHTML = SUBTITLE
@@ -25,11 +23,12 @@
     overlay.style.cssText = [
         'position:fixed', 'inset:0', 'z-index:9999',
         'background:#090909',
-        'display:flex', 'align-items:center', 'justify-content:center',
+        'display:flex', 'flex-direction:column',
+        'align-items:center', 'justify-content:center',
     ].join(';');
 
     overlay.innerHTML = `
-        <div style="width:100%;max-width:340px;padding:0 1.5rem;text-align:left;">
+        <div style="width:100%;max-width:340px;padding:0 1.5rem;text-align:center;">
             ${logoHTML}
             <p style="font-family:'Space Mono',monospace;font-size:0.55rem;letter-spacing:0.3em;color:rgba(255,255,255,0.50);text-transform:uppercase;margin-bottom:${SUBTITLE ? '0.5rem' : '2rem'};">${TITLE}</p>
             ${subtitleHTML}
@@ -39,7 +38,7 @@
                 type="password"
                 autocomplete="off"
                 placeholder="passphrase"
-                style="width:100%;background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,0.22);color:#fff;font-family:'Space Mono',monospace;font-size:0.85rem;letter-spacing:0.08em;padding:0.6rem 0;outline:none;margin-bottom:1.5rem;display:block;"
+                style="width:100%;background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,0.22);color:#fff;font-family:'Space Mono',monospace;font-size:0.85rem;letter-spacing:0.08em;padding:0.6rem 0;outline:none;margin-bottom:1.5rem;display:block;text-align:center;"
             />
             <button
                 id="auth-submit"
