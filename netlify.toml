@@ -12,6 +12,16 @@
   to   = "/works.html"
   status = 200
 
+[[redirects]]
+  from = "/fdz"
+  to   = "/fdz.html"
+  status = 200
+
+[[redirects]]
+  from = "/thinking"
+  to   = "/thinking_out_loud/index.html"
+  status = 200
+
 [[headers]]
   for = "/assets/*"
   [headers.values]
