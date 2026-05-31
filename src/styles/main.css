@@ -97,7 +97,7 @@ body {
 
 .hero-tagline {
     font-family: 'IBM Plex Sans', system-ui, sans-serif;
-    font-size: clamp(0.95rem, 2vw, 1.1rem);
+    font-size: clamp(1.05rem, 2.2vw, 1.25rem);
     font-weight: 300;
     color: rgba(255,255,255,0.88);
     line-height: 1.7;
@@ -136,7 +136,7 @@ body {
 
 .section-heading {
     font-family: 'Space Mono', monospace;
-    font-size: 0.65rem;
+    font-size: 0.78rem;
     font-weight: 700;
     letter-spacing: 0.35em;
     color: #F5C518;
@@ -146,7 +146,7 @@ body {
 
 .body-text {
     font-family: 'IBM Plex Sans', system-ui, sans-serif;
-    font-size: 0.9rem;
+    font-size: 1rem;
     color: rgba(255,255,255,0.82);
     line-height: 1.75;
 }
@@ -154,7 +154,7 @@ body {
 /* ── About ── */
 .about-text {
     font-family: 'IBM Plex Sans', system-ui, sans-serif;
-    font-size: 0.975rem;
+    font-size: 1.05rem;
     color: rgba(255,255,255,0.92);
     line-height: 1.85;
     font-weight: 300;
@@ -170,7 +170,7 @@ body {
 /* Skills */
 .skills-line {
     font-family: 'Space Mono', monospace;
-    font-size: 0.75rem;
+    font-size: 0.88rem;
     color: #fff;
     letter-spacing: 0.04em;
     line-height: 2.2;
@@ -192,18 +192,18 @@ body {
 
 .project-title {
     font-family: 'Space Mono', monospace;
-    font-size: 0.9rem;
+    font-size: 1.05rem;
     font-weight: 700;
     color: #fff;
     line-height: 1.4;
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.5rem;
 }
 
 .project-desc {
     font-family: 'IBM Plex Sans', system-ui, sans-serif;
-    font-size: 0.85rem;
+    font-size: 0.95rem;
     color: rgba(255,255,255,0.82);
-    line-height: 1.75;
+    line-height: 1.78;
 }
 
 /* ── Badges ── */
@@ -310,27 +310,27 @@ body {
 
 .exp-role {
     font-family: 'Space Mono', monospace;
-    font-size: 0.85rem;
+    font-size: 1rem;
     font-weight: 700;
     color: #fff;
     line-height: 1.35;
 }
 .exp-meta {
     font-family: 'Space Mono', monospace;
-    font-size: 0.65rem;
-    color: rgba(255,255,255,0.65);
-    margin-top: 3px;
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.70);
+    margin-top: 4px;
     letter-spacing: 0.04em;
 }
 
 .timeline-bullets { list-style: none; padding: 0; margin: 0.75rem 0 0; }
 .timeline-bullets li {
     font-family: 'IBM Plex Sans', system-ui, sans-serif;
-    font-size: 0.84rem;
-    color: rgba(255,255,255,0.82);
-    padding: 0.2rem 0 0.2rem 1rem;
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.88);
+    padding: 0.22rem 0 0.22rem 1.1rem;
     position: relative;
-    line-height: 1.55;
+    line-height: 1.6;
 }
 .timeline-bullets li::before {
     content: '–';
@@ -364,7 +364,7 @@ body {
 }
 .blog-title {
     font-family: 'Space Mono', monospace;
-    font-size: 0.95rem;
+    font-size: 1.05rem;
     font-weight: 700;
     color: rgba(255,255,255,0.95);
     line-height: 1.45;
@@ -373,10 +373,10 @@ body {
 .blog-list-item:hover .blog-title { color: #F5C518; }
 .blog-excerpt {
     font-family: 'IBM Plex Sans', system-ui, sans-serif;
-    font-size: 0.84rem;
+    font-size: 0.95rem;
     color: rgba(255,255,255,0.80);
     line-height: 1.65;
-    margin-top: 5px;
+    margin-top: 6px;
 }
 
 /* ── Contact ── */
@@ -410,14 +410,14 @@ body {
 
 .contact-card-label {
     font-family: 'Space Mono', monospace;
-    font-size: 0.78rem;
+    font-size: 0.88rem;
     font-weight: 700;
-    color: rgba(255,255,255,0.90);
+    color: rgba(255,255,255,0.95);
 }
 .contact-card-hint {
     font-family: 'IBM Plex Sans', system-ui, sans-serif;
-    font-size: 0.74rem;
-    color: rgba(255,255,255,0.65);
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.70);
 }
 .contact-card-copied .contact-card-hint { color: rgba(34,197,94,0.6) !important; }
 .contact-card-arrow { font-size: 0.85rem; color: rgba(255,255,255,0.45); margin-left: auto; flex-shrink: 0; transition: color 0.15s; }
