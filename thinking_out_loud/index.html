@@ -10,6 +10,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="../src/styles/main.css" rel="stylesheet">
+    <style>
+        :root { --y: #F5C518; }
+        .section-heading { color: var(--y) !important; }
+        .blog-meta       { color: var(--y) !important; }
+        .blog-list-item:hover .blog-title { color: var(--y) !important; }
+        .footer-link:hover { color: var(--y) !important; }
+    </style>
 </head>
 <body class="bg-site-black text-white font-body antialiased">
 
@@ -31,7 +38,7 @@
     <main class="container mx-auto px-6 max-w-4xl">
 
         <section class="hero-section">
-            <p class="font-mono text-xs tracking-[0.3em] text-white/55 mb-5 uppercase">Philosophy · Fragments · Questions</p>
+            <p class="font-mono text-xs tracking-[0.3em] mb-5 uppercase" style="color:#F5C518;">Philosophy · Fragments · Questions</p>
             <h1 class="hero-name mb-5">THINKING<br>OUT LOUD</h1>
             <p class="hero-tagline max-w-xl">
                 Philosophical fragments, half-formed ideas, and questions that don't fit anywhere else.

@@ -11,11 +11,11 @@
     document.body.style.overflow = 'hidden';
 
     const logoHTML = LOGO
-        ? `<img src="${LOGO}" alt="logo" style="width:200px;height:200px;object-fit:contain;display:block;margin:0 auto 2.5rem;" />`
+        ? `<img src="${LOGO}" alt="logo" style="width:260px;height:260px;object-fit:contain;display:block;margin:0 auto 2.5rem;" />`
         : '';
 
     const subtitleHTML = SUBTITLE
-        ? `<p style="font-family:'Space Mono',monospace;font-size:1.5rem;font-weight:700;color:#fff;letter-spacing:-0.02em;line-height:1;margin-bottom:0.5rem;">${SUBTITLE}</p>`
+        ? `<p style="font-family:'Space Mono',monospace;font-size:1.6rem;font-weight:700;color:#fff;letter-spacing:-0.02em;line-height:1;margin-bottom:0.5rem;">${SUBTITLE}</p>`
         : '';
 
     const overlay = document.createElement('div');
@@ -28,25 +28,27 @@
     ].join(';');
 
     overlay.innerHTML = `
-        <div style="width:100%;max-width:340px;padding:0 1.5rem;text-align:center;">
+        <div style="width:100%;max-width:360px;padding:0 1.5rem;text-align:center;">
             ${logoHTML}
-            <p style="font-family:'Space Mono',monospace;font-size:0.55rem;letter-spacing:0.3em;color:rgba(255,255,255,0.50);text-transform:uppercase;margin-bottom:${SUBTITLE ? '0.5rem' : '2rem'};">${TITLE}</p>
+            <p style="font-family:'Space Mono',monospace;font-size:0.55rem;letter-spacing:0.3em;color:#F5C518;text-transform:uppercase;margin-bottom:${SUBTITLE ? '0.5rem' : '2rem'};">${TITLE}</p>
             ${subtitleHTML}
-            <p style="font-family:'IBM Plex Sans',system-ui,sans-serif;font-size:0.85rem;font-weight:300;color:rgba(255,255,255,0.65);margin-bottom:2.5rem;margin-top:0.6rem;line-height:1.65;">Enter the passphrase to continue.</p>
+            <p style="font-family:'IBM Plex Sans',system-ui,sans-serif;font-size:0.88rem;font-weight:300;color:rgba(255,255,255,0.80);margin-bottom:2.5rem;margin-top:0.7rem;line-height:1.65;">Enter the passphrase to continue.</p>
             <input
                 id="auth-input"
                 type="password"
                 autocomplete="off"
                 placeholder="passphrase"
-                style="width:100%;background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,0.22);color:#fff;font-family:'Space Mono',monospace;font-size:0.85rem;letter-spacing:0.08em;padding:0.6rem 0;outline:none;margin-bottom:1.5rem;display:block;text-align:center;"
+                style="width:100%;background:transparent;border:none;border-bottom:2px solid rgba(245,197,24,0.5);color:#fff;font-family:'Space Mono',monospace;font-size:0.9rem;letter-spacing:0.1em;padding:0.65rem 0;outline:none;margin-bottom:1.75rem;display:block;text-align:center;"
+                onfocus="this.style.borderBottomColor='#F5C518'"
+                onblur="this.style.borderBottomColor='rgba(245,197,24,0.5)'"
             />
             <button
                 id="auth-submit"
-                style="font-family:'Space Mono',monospace;font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;padding:10px 22px;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.05);color:#fff;cursor:pointer;margin-bottom:1rem;"
-                onmouseover="this.style.background='rgba(255,255,255,0.1)'"
-                onmouseout="this.style.background='rgba(255,255,255,0.05)'"
+                style="font-family:'Space Mono',monospace;font-size:0.7rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;padding:12px 32px;border:none;background:#F5C518;color:#000;cursor:pointer;margin-bottom:1rem;transition:background 0.15s;"
+                onmouseover="this.style.background='#ffd700'"
+                onmouseout="this.style.background='#F5C518'"
             >ENTER</button>
-            <p id="auth-error" style="font-family:'IBM Plex Sans',system-ui,sans-serif;font-size:0.78rem;color:rgba(239,68,68,0.80);min-height:1.2em;"></p>
+            <p id="auth-error" style="font-family:'IBM Plex Sans',system-ui,sans-serif;font-size:0.78rem;color:rgba(239,68,68,0.90);min-height:1.2em;margin-top:0.25rem;"></p>
         </div>
     `;
 

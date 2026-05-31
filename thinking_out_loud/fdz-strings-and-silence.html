@@ -10,6 +10,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="../src/styles/main.css" rel="stylesheet">
+    <style>
+        :root { --y: #F5C518; }
+        .footer-link:hover { color: var(--y) !important; }
+    </style>
 </head>
 <body class="bg-site-black text-white font-body antialiased">
 
@@ -32,9 +36,9 @@
 
         <section class="hero-section pb-0">
 
-            <a href="/thinking_out_loud/" class="font-mono text-xs tracking-widest text-white/60 hover:text-white transition-colors inline-block mb-8">← THINKING OUT LOUD</a>
+            <a href="/thinking_out_loud/" class="font-mono text-xs tracking-widest inline-block mb-8" style="color:#F5C518;text-decoration:none;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'" >← THINKING OUT LOUD</a>
 
-            <p class="font-mono text-xs tracking-[0.25em] text-white/55 uppercase mb-4">FDZ · Philosophy · May 24, 2026</p>
+            <p class="font-mono text-xs tracking-[0.25em] uppercase mb-4" style="color:#F5C518;opacity:0.85;">FDZ · Philosophy · May 24, 2026</p>
 
             <h1 class="font-mono font-bold text-white leading-tight mb-8" style="font-size: clamp(2.6rem, 7vw, 4.2rem); letter-spacing: -0.02em;">
                 Strings and<br>Silence

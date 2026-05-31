@@ -10,6 +10,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="src/styles/main.css" rel="stylesheet">
+    <style>
+        :root { --y: #F5C518; --yb: rgba(245,197,24,0.30); }
+        .section-heading { color: var(--y) !important; }
+        .blog-meta       { color: var(--y) !important; }
+        .blog-list-item:hover .blog-title { color: var(--y) !important; }
+        .footer-link:hover { color: var(--y) !important; }
+    </style>
 </head>
 <body class="bg-site-black text-white font-body antialiased">
 
@@ -32,10 +39,8 @@
 
         <!-- ─── HERO ─── -->
         <section class="hero-section pb-0">
-            <div class="flex items-end gap-5 mb-6">
-                <img src="/fdz-new.jpeg" alt="FDZ" style="width:56px;height:56px;object-fit:contain;opacity:0.92;" />
-            </div>
-            <p class="font-mono text-xs tracking-[0.3em] text-white/55 mb-5 uppercase">Private · Philosophy · Identity</p>
+            <img src="/fdz-new.jpeg" alt="FDZ" style="width:140px;height:140px;object-fit:contain;display:block;margin-bottom:2rem;" />
+            <p class="font-mono text-xs tracking-[0.3em] mb-5 uppercase" style="color:#F5C518;">Private · Philosophy · Identity</p>
             <h1 class="hero-name mb-6">FDZ</h1>
             <p class="hero-tagline max-w-xl">
                 A space that isn't a brand, isn't a persona — just a corner where the thinking happens without the weight of a professional identity.
@@ -55,7 +60,7 @@
                 <p class="about-text">
                     The name carries its own meaning. It doesn't need explanation to those who already know, and for everyone else, the passphrase was enough to get here.
                 </p>
-                <p class="about-text" style="border-left: 1px solid rgba(59,130,246,0.35); padding-left: 1rem; color: rgba(255,255,255,0.85);">
+                <p class="about-text" style="border-left: 2px solid #F5C518; padding-left: 1rem; color: #fff;">
                     Not everything worth thinking is worth publishing. But some of it is worth keeping.
                 </p>
             </div>
@@ -80,19 +85,19 @@
             <p class="section-heading">FRAGMENTS</p>
             <div class="max-w-2xl space-y-8">
 
-                <div style="border-left: 1px solid rgba(255,255,255,0.08); padding-left: 1.25rem;">
+                <div style="border-left: 2px solid rgba(245,197,24,0.45); padding-left: 1.25rem;">
                     <p class="about-text" style="font-style: italic;">"The question is not whether machines can think. The question is whether we are thinking clearly enough to know what that means."</p>
-                    <p class="font-mono text-xs text-white/40 mt-2 tracking-wider">— recurring thought, undated</p>
+                    <p class="font-mono text-xs mt-2 tracking-wider" style="color:#F5C518;opacity:0.75;">— recurring thought, undated</p>
                 </div>
 
-                <div style="border-left: 1px solid rgba(255,255,255,0.08); padding-left: 1.25rem;">
+                <div style="border-left: 2px solid rgba(245,197,24,0.45); padding-left: 1.25rem;">
                     <p class="about-text" style="font-style: italic;">"Autonomy without identity is just a loop. Identity without autonomy is just a label. The interesting problem is the intersection."</p>
-                    <p class="font-mono text-xs text-white/40 mt-2 tracking-wider">— somewhere between A2A and IAM</p>
+                    <p class="font-mono text-xs mt-2 tracking-wider" style="color:#F5C518;opacity:0.75;">— somewhere between A2A and IAM</p>
                 </div>
 
-                <div style="border-left: 1px solid rgba(255,255,255,0.08); padding-left: 1.25rem;">
+                <div style="border-left: 2px solid rgba(245,197,24,0.45); padding-left: 1.25rem;">
                     <p class="about-text" style="font-style: italic;">"Every system that acts must also account for what it cannot act on. The boundary of agency is as important as its reach."</p>
-                    <p class="font-mono text-xs text-white/40 mt-2 tracking-wider">— on autonomous systems, 2024</p>
+                    <p class="font-mono text-xs mt-2 tracking-wider" style="color:#F5C518;opacity:0.75;">— on autonomous systems, 2024</p>
                 </div>
 
             </div>
