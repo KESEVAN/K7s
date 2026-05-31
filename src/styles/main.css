@@ -170,12 +170,12 @@ body {
 /* Skills */
 .skills-line {
     font-family: 'Space Mono', monospace;
-    font-size: 0.72rem;
-    color: rgba(255,255,255,0.78);
+    font-size: 0.75rem;
+    color: #fff;
     letter-spacing: 0.04em;
-    line-height: 2.0;
+    line-height: 2.2;
 }
-.skills-line span { color: rgba(255,255,255,0.18); margin: 0 4px; }
+.skills-line span { color: rgba(255,255,255,0.22); margin: 0 4px; }
 
 /* ── Project list ── */
 .project-item {
