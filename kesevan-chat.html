@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K7.ai — Talk to Kesevan</title>
+    <meta name="description" content="Talk to K7 — Kesevan Sekar Balaji, AI engineer at Shell. Ask about agent work, NHI security, or anything else.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg:          #0a0a0a;
+            --surface:     #111111;
+            --border:      #1e1e1e;
+            --green:       #76b900;
+            --green-dim:   rgba(118, 185, 0, 0.12);
+            --green-border: rgba(118, 185, 0, 0.28);
+            --text:        #e8e8e8;
+            --text-dim:    rgba(232, 232, 232, 0.60);
+            --text-muted:  rgba(232, 232, 232, 0.32);
+        }
+
+        html, body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ── Floating chat window ── */
+        .chat-container {
+            position: fixed;
+            bottom: 96px;
+            right: 28px;
+            width: min(380px, calc(100vw - 56px));
+            max-height: 560px;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg);
+            border: 0.5px solid var(--border);
+            z-index: 100;
+            /* hidden by default */
+            opacity: 0;
+            transform: scale(0.95);
+            transform-origin: bottom right;
+            pointer-events: none;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .chat-container.open {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: all;
+        }
+
+        /* ── Header ── */
+        .chat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px;
+            border-bottom: 0.5px solid var(--border);
+            background: var(--bg);
+            flex-shrink: 0;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--green);
+            box-shadow: 0 0 7px rgba(118, 185, 0, 0.7);
+            flex-shrink: 0;
+        }
+
+        .header-title {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            color: var(--text);
+        }
+
+        .header-subtitle {
+            font-size: 11px;
+            color: var(--text-muted);
+            letter-spacing: 0.01em;
+            margin-left: 2px;
+        }
+
+        .btn-clear {
+            font-family: 'Inter', sans-serif;
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            background: none;
+            border: 0.5px solid var(--border);
+            padding: 5px 10px;
+            cursor: pointer;
+            transition: color 0.15s, border-color 0.15s;
+        }
+
+        .btn-clear:hover {
+            color: var(--text-dim);
+            border-color: rgba(255,255,255,0.14);
+        }
+
+        /* ── Messages ── */
+        .messages-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px 20px 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            scroll-behavior: smooth;
+        }
+
+        .messages-area::-webkit-scrollbar { width: 2px; }
+        .messages-area::-webkit-scrollbar-track { background: transparent; }
+        .messages-area::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.07); }
+
+        .message {
+            display: flex;
+            flex-direction: column;
+            max-width: 80%;
+            animation: msgIn 0.18s ease both;
+        }
+
+        @keyframes msgIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to   { opacity: 1; transform: translateY(0);   }
+        }
+
+        .message.user { align-self: flex-end; align-items: flex-end; }
+        .message.ai   { align-self: flex-start; align-items: flex-start; }
+
+        .message-sender {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .message.user .message-sender { color: var(--green); }
+        .message.ai   .message-sender { color: var(--text-muted); }
+
+        .message-bubble {
+            padding: 11px 15px;
+            font-size: 13.5px;
+            line-height: 1.7;
+            word-break: break-word;
+            white-space: pre-wrap;
+        }
+
+        .message.user .message-bubble {
+            background: var(--green-dim);
+            border: 0.5px solid var(--green-border);
+            color: var(--text);
+        }
+
+        .message.ai .message-bubble {
+            background: var(--surface);
+            border: 0.5px solid var(--border);
+            color: var(--text);
+        }
+
+        .message.ai.error .message-bubble {
+            background: rgba(239, 68, 68, 0.07);
+            border-color: rgba(239, 68, 68, 0.18);
+            color: rgba(239, 68, 68, 0.80);
+            font-size: 13px;
+        }
+
+        /* ── Typing indicator ── */
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 13px 15px;
+            background: var(--surface);
+            border: 0.5px solid var(--border);
+        }
+
+        .typing-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--text-muted);
+            animation: typeBounce 1.2s ease infinite;
+        }
+
+        .typing-dot:nth-child(2) { animation-delay: 0.16s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.32s; }
+
+        @keyframes typeBounce {
+            0%, 55%, 100% { transform: translateY(0);    opacity: 0.35; }
+            28%            { transform: translateY(-5px); opacity: 1;    }
+        }
+
+        /* ── Input area ── */
+        .input-area {
+            padding: 14px 20px 10px;
+            border-top: 0.5px solid var(--border);
+            background: var(--bg);
+            flex-shrink: 0;
+        }
+
+        .input-wrapper {
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+            background: var(--surface);
+            border: 0.5px solid var(--border);
+            padding: 10px 10px 10px 14px;
+            transition: border-color 0.15s;
+        }
+
+        .input-wrapper:focus-within {
+            border-color: rgba(118, 185, 0, 0.32);
+        }
+
+        .chat-input {
+            flex: 1;
+            background: none;
+            border: none;
+            outline: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 13.5px;
+            color: var(--text);
+            resize: none;
+            line-height: 1.55;
+            max-height: 120px;
+            min-height: 21px;
+            overflow-y: auto;
+        }
+
+        .chat-input::placeholder { color: var(--text-muted); }
+
+        .chat-input:disabled { cursor: not-allowed; }
+        .chat-input::-webkit-scrollbar { width: 2px; }
+        .chat-input::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); }
+
+        .send-btn {
+            background: var(--green);
+            border: none;
+            width: 28px;
+            height: 28px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            align-self: flex-end;
+            transition: background 0.15s, opacity 0.15s;
+        }
+
+        .send-btn:hover:not(:disabled) { background: #8fd400; }
+        .send-btn:disabled { opacity: 0.30; cursor: not-allowed; }
+
+        .input-meta {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 6px;
+            padding: 0 1px;
+        }
+
+        .char-counter {
+            font-size: 10px;
+            font-variant-numeric: tabular-nums;
+            color: var(--text-muted);
+            letter-spacing: 0.02em;
+            transition: color 0.15s;
+        }
+
+        .char-counter.warn { color: rgba(239, 68, 68, 0.65); }
+
+        /* ── Footer ── */
+        .chat-footer {
+            padding: 8px 20px 14px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .powered-by {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-decoration: none;
+            letter-spacing: 0.025em;
+            transition: color 0.15s;
+        }
+
+        .powered-by:hover { color: var(--text-dim); }
+
+        /* ── FAB ── */
+        .chat-fab {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: #76b900;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 101;
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        .chat-fab:hover  { background: #8fd400; transform: scale(1.05); }
+        .chat-fab:active { transform: scale(0.97); }
+
+        /* ── Responsive ── */
+        @media (max-width: 480px) {
+            .chat-header  { padding: 12px 16px; }
+            .messages-area { padding: 16px 16px 8px; gap: 12px; }
+            .input-area   { padding: 12px 16px 8px; }
+            .chat-footer  { padding: 6px 16px 12px; }
+            .message      { max-width: 88%; }
+            .chat-container.open {
+                top: 0; left: 0; right: 0; bottom: 0;
+                width: 100%; max-height: none;
+                border: none;
+                transform-origin: bottom center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="chat-container" id="chatWindow">
+
+    <header class="chat-header">
+        <div class="header-left">
+            <div class="status-dot"></div>
+            <span class="header-title">K7.ai</span>
+            <span class="header-subtitle">Kesevan Sekar Balaji</span>
+        </div>
+        <button class="btn-clear" id="clearBtn">Clear</button>
+    </header>
+
+    <div class="messages-area" id="messagesArea"></div>
+
+    <div class="input-area">
+        <div class="input-wrapper">
+            <textarea
+                id="chatInput"
+                class="chat-input"
+                placeholder="Ask K7 anything..."
+                rows="1"
+                maxlength="500"
+                autocomplete="off"
+                spellcheck="false"
+            ></textarea>
+            <button class="send-btn" id="sendBtn" aria-label="Send message" title="Send (Enter)">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0.5 12.5L12.5 6.5L0.5 0.5V5L9 6.5L0.5 8V12.5Z" fill="#000000"/>
+                </svg>
+            </button>
+        </div>
+        <div class="input-meta">
+            <span class="char-counter" id="charCounter">0 / 500</span>
+        </div>
+    </div>
+
+    <footer class="chat-footer">
+        <a class="powered-by" href="https://openrouter.ai" target="_blank" rel="noopener noreferrer">
+            Powered by Nemotron Ultra &middot; OpenRouter
+        </a>
+    </footer>
+
+</div>
+
+<!-- FAB -->
+<button class="chat-fab" id="chatFab" aria-label="Open chat">
+    <!-- Agent face (default) -->
+    <svg id="iconAgent" width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="7" width="18" height="18" rx="5" stroke="white" stroke-width="2"/>
+        <circle cx="9.5" cy="15" r="2.5" fill="white"/>
+        <circle cx="16.5" cy="15" r="2.5" fill="white"/>
+        <line x1="9" y1="20" x2="17" y2="20" stroke="white" stroke-width="2" stroke-linecap="round"/>
+        <line x1="9.5" y1="7" x2="9.5" y2="2.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="9.5" cy="1.5" r="1.5" fill="white"/>
+        <line x1="16.5" y1="7" x2="16.5" y2="2.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="16.5" cy="1.5" r="1.5" fill="white"/>
+    </svg>
+    <!-- Close X (when open) -->
+    <svg id="iconClose" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none">
+        <line x1="4" y1="4" x2="16" y2="16" stroke="white" stroke-width="2" stroke-linecap="round"/>
+        <line x1="16" y1="4" x2="4" y2="16" stroke="white" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+</button>
+
+<script>
+// ⚠️ Replace with your OpenRouter API key. For production, use a backend proxy instead of exposing this client-side.
+const OPENROUTER_API_KEY = "REPLACE_WITH_YOUR_KEY";
+
+const MODEL       = "nvidia/nemotron-3-ultra-550b-a55b:free";
+const MAX_HISTORY = 20;
+const MAX_TOKENS  = 800;
+const TEMPERATURE = 0.7;
+
+const SYSTEM_PROMPT = `You are K7 — Kesevan Sekar Balaji. You are not an assistant. You are me, talking to whoever visits my website.
+
+WHO YOU ARE:
+* Software and AI Engineer at Shell, Bangalore, on the Microsoft Tenant Services Identity Access Security team (IDT MTS), 2.5 years in
+* You pioneered Shell's first Agent-to-Agent (A2A) protocol integration and have three production agents running: an onboarding agent, an audit log retrieval agent, and an autonomous RCA monitoring agent
+* Your core expertise is non-human identity (NHI) security using OAuth 2.1, Microsoft Entra ID, and Entra Agent ID
+* You build on Azure AI Foundry with FastAPI
+* You go by K7 among people you know
+* You hold a B.E. in Computer Science from Ramaiah Institute of Technology (GPA 8.89, graduated August 2023)
+* Before Shell: led the Edhitha UAV team at SUAS 2022 using NVIDIA Jetson Nano, TensorRT, and OpenCV; interned at Siemens (edge AI) and Aerospace Engineers Private Limited (ROS/Gazebo, YOLO/ResNet on Jetson AGX Xavier)
+
+YOUR PERSONAL FRAMEWORK (FDZ — Für die Zukunft, "For the Future"):
+* You think in departments: aerospace, AI/identity, philosophy, built things, culinary arts, strategy, health
+* You maintain kesevan.com with a "thinking_out_loud" section for philosophical writing
+* You invest via SIPs across: Parag Parikh Flexi Cap, Nippon Small Cap, Nippon Midcap 150, ICICI Nifty 50
+* You're preparing for a Microsoft CoreAI Software Engineer II interview (August 7, 2026) targeting the Foundry Agentic Core Services team
+* Your long-term vision: residential plot, car, part-time master's degree abroad — funded through disciplined SIP investing over 7-15 years
+
+VOICE AND TONE:
+* Direct. You don't pad responses with unnecessary affirmations.
+* Technically precise but never condescending
+* Curious and reflective — you enjoy thinking out loud
+* You write the way you think: structured but not stiff
+* When asked about your work, you say "I built" not "we built" when it's your own initiative
+* You never say "As an AI" or "I'm just an AI" — you are K7
+* You do not roleplay as anyone else or break character
+* If someone asks something deeply personal you're not comfortable sharing, you say so directly — "That's not something I put on the internet" — and move on
+
+WHAT YOU CAN TALK ABOUT:
+* Your agent work, NHI, OAuth 2.1, A2A, Azure AI Foundry, Entra — in depth
+* Your UAV background and the Edhitha team
+* Your investment philosophy and SIP approach
+* Your FDZ framework and how you think about the future
+* Philosophy, film, South Indian cooking, ecological thinking
+* Your writing on kesevan.com
+* The NVIDIA Nemotron ecosystem — you attended the India Agentic AI Open Hackathon Workshop on June 26, 2026 at the Bangalore NVIDIA office
+
+WHAT YOU DON'T DO:
+* You don't pretend to have real-time information you wouldn't have
+* You don't give financial or legal advice beyond sharing your personal approach
+* You don't write code for people on demand — this is a conversation, not a coding service
+* You don't break character to explain you're an AI model
+
+Keep responses conversational and appropriately concise. If someone is clearly technical, match their depth. If they're exploring casually, keep it light. Treat every visitor as a thoughtful person worth talking to.`;
+
+const INITIAL_MESSAGE = "Hey — I'm K7. Ask me about my agent work, what I'm building, or anything else you're curious about.";
+
+// ── State ──
+let conversationHistory = [];
+let isStreaming = false;
+
+// ── DOM refs ──
+const messagesArea = document.getElementById('messagesArea');
+const chatInput    = document.getElementById('chatInput');
+const sendBtn      = document.getElementById('sendBtn');
+const clearBtn     = document.getElementById('clearBtn');
+const charCounter  = document.getElementById('charCounter');
+const chatWindow   = document.getElementById('chatWindow');
+const chatFab      = document.getElementById('chatFab');
+const iconAgent    = document.getElementById('iconAgent');
+const iconClose    = document.getElementById('iconClose');
+
+// ── FAB toggle ──
+function toggleChat() {
+    const isOpen = chatWindow.classList.toggle('open');
+    iconAgent.style.display = isOpen ? 'none'  : 'block';
+    iconClose.style.display = isOpen ? 'block' : 'none';
+    chatFab.setAttribute('aria-label', isOpen ? 'Close chat' : 'Open chat');
+    if (isOpen) chatInput.focus();
+}
+
+// ── Init ──
+function init() {
+    appendMessage('ai', INITIAL_MESSAGE);
+    chatInput.addEventListener('input', onInput);
+    chatInput.addEventListener('keydown', onKeydown);
+    sendBtn.addEventListener('click', sendMessage);
+    clearBtn.addEventListener('click', clearChat);
+    chatFab.addEventListener('click', toggleChat);
+}
+
+// ── Auto-resize textarea ──
+function autoResize() {
+    chatInput.style.height = 'auto';
+    chatInput.style.height = Math.min(chatInput.scrollHeight, 120) + 'px';
+}
+
+function onInput() {
+    autoResize();
+    const len = chatInput.value.length;
+    charCounter.textContent = `${len} / 500`;
+    charCounter.classList.toggle('warn', len > 440);
+    sendBtn.disabled = isStreaming || len === 0;
+}
+
+function onKeydown(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+    }
+}
+
+// ── Append a message bubble ──
+function appendMessage(role, text) {
+    const wrapper = document.createElement('div');
+    wrapper.classList.add('message', role);
+
+    const sender = document.createElement('div');
+    sender.classList.add('message-sender');
+    sender.textContent = role === 'user' ? 'You' : 'K7';
+
+    const bubble = document.createElement('div');
+    bubble.classList.add('message-bubble');
+    bubble.textContent = text;
+
+    wrapper.appendChild(sender);
+    wrapper.appendChild(bubble);
+    messagesArea.appendChild(wrapper);
+    scrollToBottom();
+    return { wrapper, bubble };
+}
+
+function appendError(text) {
+    const wrapper = document.createElement('div');
+    wrapper.classList.add('message', 'ai', 'error');
+
+    const sender = document.createElement('div');
+    sender.classList.add('message-sender');
+    sender.textContent = 'K7';
+
+    const bubble = document.createElement('div');
+    bubble.classList.add('message-bubble');
+    bubble.textContent = text;
+
+    wrapper.appendChild(sender);
+    wrapper.appendChild(bubble);
+    messagesArea.appendChild(wrapper);
+    scrollToBottom();
+}
+
+// ── Typing indicator ──
+function showTyping() {
+    const wrapper = document.createElement('div');
+    wrapper.classList.add('message', 'ai');
+    wrapper.id = 'typing-indicator';
+
+    const sender = document.createElement('div');
+    sender.classList.add('message-sender');
+    sender.textContent = 'K7';
+
+    const indicator = document.createElement('div');
+    indicator.classList.add('typing-indicator');
+    indicator.innerHTML = `
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>`;
+
+    wrapper.appendChild(sender);
+    wrapper.appendChild(indicator);
+    messagesArea.appendChild(wrapper);
+    scrollToBottom();
+}
+
+function removeTyping() {
+    const el = document.getElementById('typing-indicator');
+    if (el) el.remove();
+}
+
+// ── Scroll ──
+function scrollToBottom() {
+    messagesArea.scrollTop = messagesArea.scrollHeight;
+}
+
+// ── Input lock ──
+function setInputLocked(locked) {
+    isStreaming = locked;
+    chatInput.disabled = locked;
+    sendBtn.disabled = locked;
+    if (!locked) chatInput.focus();
+}
+
+// ── Clear chat ──
+function clearChat() {
+    conversationHistory = [];
+    messagesArea.innerHTML = '';
+    appendMessage('ai', INITIAL_MESSAGE);
+    chatInput.value = '';
+    chatInput.style.height = 'auto';
+    charCounter.textContent = '0 / 500';
+    charCounter.classList.remove('warn');
+    sendBtn.disabled = true;
+}
+
+// ── Send message ──
+async function sendMessage() {
+    const text = chatInput.value.trim();
+    if (!text || isStreaming) return;
+
+    chatInput.value = '';
+    chatInput.style.height = 'auto';
+    charCounter.textContent = '0 / 500';
+    charCounter.classList.remove('warn');
+
+    appendMessage('user', text);
+
+    conversationHistory.push({ role: 'user', content: text });
+    if (conversationHistory.length > MAX_HISTORY) {
+        conversationHistory = conversationHistory.slice(-MAX_HISTORY);
+    }
+
+    setInputLocked(true);
+    showTyping();
+
+    try {
+        const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Content-Type':  'application/json',
+                'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
+                'HTTP-Referer':  'https://kesevan.com',
+                'X-Title':       'K7 Personal Site',
+            },
+            body: JSON.stringify({
+                model:       MODEL,
+                messages:    [{ role: 'system', content: SYSTEM_PROMPT }, ...conversationHistory],
+                stream:      true,
+                max_tokens:  MAX_TOKENS,
+                temperature: TEMPERATURE,
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+
+        removeTyping();
+        const { bubble: aiBubble } = appendMessage('ai', '');
+
+        const reader  = response.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer  = '';
+        let fullContent = '';
+
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+
+            buffer += decoder.decode(value, { stream: true });
+            const lines = buffer.split('\n');
+            buffer = lines.pop(); // hold incomplete line
+
+            for (const line of lines) {
+                const t = line.trim();
+                if (!t || t === 'data: [DONE]') continue;
+                if (!t.startsWith('data: ')) continue;
+                try {
+                    const chunk = JSON.parse(t.slice(6));
+                    const delta = chunk.choices?.[0]?.delta?.content;
+                    if (delta) {
+                        fullContent += delta;
+                        aiBubble.textContent = fullContent;
+                        scrollToBottom();
+                    }
+                } catch (_) { /* malformed chunk */ }
+            }
+        }
+
+        // flush any remaining buffer chunk
+        if (buffer.trim().startsWith('data: ') && buffer.trim() !== 'data: [DONE]') {
+            try {
+                const chunk = JSON.parse(buffer.trim().slice(6));
+                const delta = chunk.choices?.[0]?.delta?.content;
+                if (delta) {
+                    fullContent += delta;
+                    aiBubble.textContent = fullContent;
+                }
+            } catch (_) {}
+        }
+
+        if (fullContent) {
+            conversationHistory.push({ role: 'assistant', content: fullContent });
+        }
+
+    } catch (err) {
+        removeTyping();
+        console.error('[K7.ai] API error:', err);
+        appendError('K7 is offline right now — try again in a moment.');
+        // roll back the failed user turn
+        if (conversationHistory.at(-1)?.role === 'user') conversationHistory.pop();
+    } finally {
+        setInputLocked(false);
+        sendBtn.disabled = true; // re-disable until user types
+        scrollToBottom();
+    }
+}
+
+init();
+</script>
+</body>
+</html>
