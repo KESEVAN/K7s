@@ -2,6 +2,10 @@
   command   = "npm run build"
   publish   = "dist"
 
+[[edge_functions]]
+  function = "chat"
+  path     = "/api/chat"
+
 [[redirects]]
   from = "/goals"
   to   = "/goals.html"
