@@ -244,6 +244,56 @@
         }
         @media (max-width: 480px) { .chat-fab-hint { display: none; } }
 
+        /* ── CARD modal ── */
+        #k7CardOverlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.80);
+            backdrop-filter: blur(6px);
+            z-index: 9500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+        #k7CardOverlay.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+        #k7CardModal {
+            max-width: 280px;
+            width: calc(100% - 48px);
+            background: #0f0f0f;
+            border: 0.5px solid #222;
+            border-radius: 16px;
+            padding: 28px 24px;
+            text-align: center;
+            position: relative;
+            transform: scale(0.94);
+            opacity: 0;
+            transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+        }
+        #k7CardOverlay.open #k7CardModal {
+            transform: scale(1);
+            opacity: 1;
+        }
+        #k7CardClose {
+            position: absolute;
+            top: 12px;
+            right: 14px;
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.30);
+            font-size: 18px;
+            cursor: pointer;
+            line-height: 1;
+            padding: 2px 5px;
+            transition: color 0.15s;
+        }
+        #k7CardClose:hover { color: rgba(255,255,255,0.65); }
+
         @media (max-width: 480px) {
             .chat-container .chat-header  { padding: 12px 16px; }
             .chat-container .messages-area { padding: 16px 16px 8px; gap: 12px; }
@@ -290,6 +340,7 @@
                 <a href="https://blog.kesevan.com" target="_blank" class="btn-outline">WRITING</a>
                 <a href="#contact"                                class="btn-solid">CONTACT</a>
                 <a href="/kesevan-resume.pdf"       target="_blank" class="btn-ghost">RESUME ↗</a>
+                <button class="btn-card" id="k7CardBtn">CARD</button>
             </div>
         </section>
 
@@ -617,6 +668,19 @@
         </footer>
     </div>
 
+    <!-- CARD modal -->
+    <div id="k7CardOverlay">
+        <div id="k7CardModal">
+            <button id="k7CardClose" aria-label="Close">×</button>
+            <p style="font-family:'Space Mono',monospace;font-size:0.65rem;letter-spacing:0.18em;color:#c9a84c;margin:0 0 22px;">K7</p>
+            <div style="background:#fff;padding:10px;display:inline-block;margin-bottom:18px;line-height:0;">
+                <img src="https://chart.googleapis.com/chart?cht=qr&chs=160x160&chl=https%3A%2F%2Fkesevan.com&choe=UTF-8" width="160" height="160" alt="QR code for kesevan.com">
+            </div>
+            <p style="color:#fff;font-family:'Space Mono',monospace;font-size:0.75rem;letter-spacing:0.06em;margin:0 0 8px;">kesevan.com</p>
+            <p style="color:rgba(255,255,255,0.38);font-family:'IBM Plex Sans',sans-serif;font-size:0.7rem;margin:0;">Kesevan Sekar Balaji</p>
+        </div>
+    </div>
+
     <div class="chat-fab-hint" id="k7ChatHint"><span style="color:#76b900;">·</span> talk to me</div>
     <button class="chat-fab" id="k7ChatFab" aria-label="Open chat">
         <svg id="k7IconAgent" width="26" height="26" viewBox="0 0 26 26" fill="none">
@@ -923,6 +987,19 @@ Keep it short and real. Match the energy — "who are you?" gets a line, not a w
             var hint = document.getElementById('k7ChatHint');
             if (hint && !chatWindow.classList.contains('open')) hint.classList.add('hide');
         }, 5000);
+    })();
+
+    // CARD modal
+    (function() {
+        var overlay = document.getElementById('k7CardOverlay');
+        var btn     = document.getElementById('k7CardBtn');
+        var close   = document.getElementById('k7CardClose');
+        function openCard()  { overlay.classList.add('open'); }
+        function closeCard() { overlay.classList.remove('open'); }
+        btn.addEventListener('click', openCard);
+        close.addEventListener('click', closeCard);
+        overlay.addEventListener('click', function(e) { if (e.target === overlay) closeCard(); });
+        document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeCard(); });
     })();
     </script>
 </body>

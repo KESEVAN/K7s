@@ -104,7 +104,7 @@ body {
 }
 
 /* ── Buttons ── */
-.btn-outline, .btn-solid, .btn-ghost {
+.btn-outline, .btn-solid, .btn-ghost, .btn-card {
     font-family: 'Space Mono', monospace;
     font-size: 0.65rem;
     letter-spacing: 0.18em;
@@ -130,6 +130,14 @@ body {
     color: rgba(245,197,24,0.88);
 }
 .btn-ghost:hover { color: #F5C518; border-color: rgba(245,197,24,0.65); background: rgba(245,197,24,0.06); }
+
+.btn-card {
+    border: 1px solid #c9a84c;
+    color: #c9a84c;
+    background: transparent;
+    cursor: pointer;
+}
+.btn-card:hover { background: rgba(201,168,76,0.07); }
 
 /* ── Sections ── */
 .section-pad { padding: 5rem 0; }
